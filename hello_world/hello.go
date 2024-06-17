@@ -2,12 +2,15 @@ package main
 
 import "fmt"
 
-const spanish = "Spanish"
-const french = "French"
-
-const englishHelloPrefix = "Hello, "
-const spanishHelloPrefix = "Hola, "
-const frenchHelloPrefix = "Bonjour, "
+// Microlesson #1
+// group related constants for readability
+const (
+	spanish            = "Spanish"
+	french             = "French"
+	englishHelloPrefix = "Hello, "
+	spanishHelloPrefix = "Hola, "
+	frenchHelloPrefix  = "Bonjour, "
+)
 
 func Hello(name string, language string) string {
 	if name == "" {
@@ -17,16 +20,20 @@ func Hello(name string, language string) string {
 	return greetingPrefix(language) + name
 }
 
+// Microlesson #2
+// using map instead of switch statement
+// if you had many switch statement cases, I think a map is bit more readable
+// I didn't benchmark this, but I my guess is it would be faster than a switch statement O(n) vs O(1) lookup
+var greetings = map[string]string{
+	spanish: spanishHelloPrefix,
+	french:  frenchHelloPrefix,
+}
+
 func greetingPrefix(language string) (prefix string) {
-	switch language {
-	case spanish:
-		prefix = spanishHelloPrefix
-	case french:
-		prefix = frenchHelloPrefix
-	default:
-		prefix = englishHelloPrefix
+	if prefix, exists := greetings[language]; exists {
+		return prefix
 	}
-	return
+	return englishHelloPrefix
 }
 
 func main() {
