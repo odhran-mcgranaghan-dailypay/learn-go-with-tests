@@ -21,6 +21,8 @@ func assertEqualsInteger(t testing.TB, got, want int) {
 	}
 }
 
+// Defined numbers as a slice, but numbers... notation passes the slice as individual arguments
+// AddMultiple(numbers...) is the same as AddMultiple(1, 2, 3, 4, 5)
 func TestAddMultiple(t *testing.T) {
 	t.Run("add multiple numbers", func(t *testing.T) {
 		numbers := []int{1, 2, 3, 4, 5}
