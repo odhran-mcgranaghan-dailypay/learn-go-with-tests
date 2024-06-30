@@ -1,0 +1,27 @@
+package main
+
+import "fmt"
+
+type Thing struct {
+	Name string
+}
+
+func modifyByValue(t Thing) {
+	t.Name = "Modified by Value"
+}
+
+func modifyByPointer(t *Thing) {
+	t.Name = "Modified by Pointer"
+}
+
+func main() {
+	t := Thing{Name: "Original"}
+
+	// Pass by value
+	modifyByValue(t)
+	fmt.Println("After modifyByValue:", t.Name) // Output: "After modifyByValue: Original"
+
+	// Pass by pointer
+	modifyByPointer(&t)
+	fmt.Println("After modifyByPointer:", t.Name) // Output: "After modifyByPointer: Modified by Pointer"
+}
