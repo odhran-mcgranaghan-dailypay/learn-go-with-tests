@@ -52,6 +52,7 @@ func TestGreet(t *testing.T) {
 
 	t.Run("Test Case 3: Writing to a Network", func(t *testing.T) {
 		client, server := net.Pipe()
+		// pipe implements Connection interface which satisfies the the io.Writer interface
 		defer client.Close()
 		defer server.Close()
 
@@ -68,5 +69,13 @@ func TestGreet(t *testing.T) {
 		if got != want {
 			t.Errorf("got %q want %q", got, want)
 		}
+	})
+
+	t.Run("Test Case 4: Logging", func(t *testing.T) {
+		// var logBuffer bytes.Buffer
+		// logger := log.New(&logBuffer, "INFO: ", log.LstdFlags)
+
+		// TODO
+
 	})
 }

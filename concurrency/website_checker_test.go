@@ -24,7 +24,7 @@ func slowStubWebsiteChecker(_ string) bool {
 
 func BenchmarkCheckWebsites(b *testing.B) {
 
-	urls := make([]string, 100)
+	urls := make([]string, 1000)
 	for i := range urls {
 		urls[i] = "some url"
 	}
@@ -40,6 +40,13 @@ func BenchmarkCheckWebsites(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			CheckWebsitesSlow(slowStubWebsiteChecker, urls)
+		}
+	})
+
+	b.Run("benchmark sync.map website checker", func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			CheckWebsitesSyncMap(slowStubWebsiteChecker, urls)
 		}
 	})
 
