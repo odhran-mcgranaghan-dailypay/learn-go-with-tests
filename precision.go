@@ -6,7 +6,7 @@ import (
 
 // link to docs https://pkg.go.dev/fmt
 
-func main() {
+func Run() {
 	value := 123.456789
 
 	// .g - It prints the number with the shortest representation that preserves the specified precision.

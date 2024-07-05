@@ -18,7 +18,7 @@ func bToMb(b uint64) uint64 {
 	return b / 1024 / 1024
 }
 
-func main() {
+func Run() {
 	fmt.Println("Before preallocation:")
 	printMemUsage()
 	m := make(map[string]string, 1000000) // Increased size for clearer results
