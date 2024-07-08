@@ -1,4 +1,4 @@
-package dining_philosophers
+package basic
 
 import (
 	"fmt"
@@ -64,6 +64,9 @@ func (p Philosopher) eat() {
 }
 
 func Run() {
+
+	fmt.Println("DINNER WITH SELECT AND CHANNELS!")
+
 	// setup forks, one for each philosopher
 	forks := make([]*Fork, philosephersAtDinner)
 	for i := 0; i < philosephersAtDinner; i++ {
