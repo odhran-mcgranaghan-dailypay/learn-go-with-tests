@@ -44,22 +44,21 @@ func (p Philosopher) think() {
 
 func (p Philosopher) eat() {
 	for {
+		p.leftFork <- true
 		select {
-		case p.leftFork <- true:
-			select {
-			case p.rightFork <- true:
-				// The Philosopher has picked up both forks and can now eat
-				fmt.Printf("Philosopher %d is eating\n", p.id)
-				time.Sleep(time.Millisecond * 100)
-				// Finished eating, release the forks
-				<-p.leftFork
-				<-p.rightFork
-				return
-			default:
-				// didn't get the right fork, release the left fork
-				<-p.leftFork
-			}
+		case p.rightFork <- true:
+			// The Philosopher has picked up both forks and can now eat
+			fmt.Printf("Philosopher %d is eating\n", p.id)
+			time.Sleep(time.Millisecond * 100)
+			// Finished eating, release the forks
+			<-p.leftFork
+			<-p.rightFork
+			return
+		default:
+			// didn't get the right fork, release the left fork
+			<-p.leftFork
 		}
+		// failed to get either fork, think again
 	}
 }
 

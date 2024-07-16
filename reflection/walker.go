@@ -18,21 +18,35 @@ func getValue(x interface{}) reflect.Value {
 func walk(x interface{}, fn func(input string)) {
 	val := getValue(x)
 
-	if val.Kind() == reflect.Slice {
-		for i := 0; i < val.Len(); i++ {
-			walk(val.Index(i).Interface(), fn)
-		}
-		return
+	walkValue := func(value reflect.Value) {
+		walk(value.Interface(), fn)
 	}
 
-	// iterate through fields of x
-	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
-		switch field.Kind() {
-		case reflect.String:
-			fn(field.String())
-		case reflect.Struct:
-			walk(field.Interface(), fn)
+	switch val.Kind() {
+	case reflect.String:
+		fn(val.String())
+	case reflect.Struct:
+		for i := 0; i < val.NumField(); i++ {
+			walkValue(val.Field(i))
+		}
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < val.Len(); i++ {
+			walkValue(val.Index(i))
+		}
+	case reflect.Map:
+		for _, key := range val.MapKeys() {
+			val := val.MapIndex(key)
+			walk(val.Interface(), fn)
+		}
+	case reflect.Chan:
+		// iterate over the values sent to the channel
+		for v, ok := val.Recv(); ok; v, ok = val.Recv() {
+			walk(v.Interface(), fn)	
+		}
+	case reflect.Func:
+		valueFunctionResult := val.Call(nil)
+		for _, res := range valueFunctionResult {
+			walkValue(res)
 		}
 	}
 }
