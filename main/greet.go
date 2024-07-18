@@ -19,7 +19,7 @@ func MyGreetingHandler(w http.ResponseWriter, r *http.Request) {
 
 // Use cases and test cases for these
 
-func main() {
+func main2() {
 	// Write output to standard output
 	Greet(os.Stdout, "John")
 
