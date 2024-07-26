@@ -1,12 +1,49 @@
-package generics
+package microlesson
 
 import (
 	"testing"
 )
 
+type MySpecialString string
+
 func TestStack(t *testing.T) {
+
+	t.Run("Type Term - string", func(t *testing.T) {
+		stack := new(StackV2[string])
+		stack.Push("hello")
+		val, _ := stack.Pop()
+		AssertEqual(t, val, "hello")
+
+	})
+
+	t.Run("Type Term - int", func(t *testing.T) {
+		stack := new(StackV2[int])
+		stack.Push(10)
+		val, _ := stack.Pop()
+		AssertEqual(t, val, 10)
+
+	})
+
+	t.Run("Type Term - underlying Type test", func(t *testing.T) {
+		stack := new(StackV2[MySpecialString])
+		stack.Push("hello")
+		val, _ := stack.Pop()
+		AssertEqual(t, val, "hello")
+
+	})
+
+	// interfaces with type elements are valid only as type constraints.
+	// It is a compile-time error to use them as the type for a variable, field, return value, or parameter.
+
+	t.Run("Type Term - illegal usage of type terms", func(t *testing.T) {
+		//
+		var myVar AcceptableTypeTerms
+		myVar = 42
+		myVar = "hello"
+	})
+
 	t.Run("integer stack", func(t *testing.T) {
-		myStackOfInts := new(Stack[int])
+		myStackOfInts := new(StackV2[int])
 
 		// check stack is empty
 		AssertTrue(t, myStackOfInts.IsEmpty())
@@ -25,15 +62,15 @@ func TestStack(t *testing.T) {
 	})
 
 	t.Run("string stack", func(t *testing.T) {
-		stackOfStrings := new(Stack[string])
+		stackOfStrings := new(StackV2[string])
 
 		AssertTrue(t, stackOfStrings.IsEmpty())
 		stackOfStrings.Push("odhran")
 		AssertFalse(t, stackOfStrings.IsEmpty())
 
-		stackOfStrings.Push("banbha")
+		stackOfStrings.Push("dog")
 		value, _ := stackOfStrings.Pop()
-		AssertEqual(t, value, "banbha")
+		AssertEqual(t, value, "dog")
 		value, _ = stackOfStrings.Pop()
 		AssertTrue(t, stackOfStrings.IsEmpty())
 
